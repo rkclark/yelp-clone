@@ -31,6 +31,16 @@ feature 'restaurant' do
       expect(page).to have_content restaurant_name
       expect(current_path).to eq '/restaurants'
     end
+
+    context 'an invalid restaurant' do
+      let(:short_name) { 'kf' }
+
+      scenario 'does not let you submit a name that is too short' do
+        fill_in_restaurant_form(name: short_name, description: restaurant_desc)
+        expect(page).not_to have_css 'h2', text: 'kf'
+        expect(page).to have_content 'error'
+      end
+    end
   end
   context 'viewing restaurants' do
     let!(:kfc) { create_restaurant(name: restaurant_name) }

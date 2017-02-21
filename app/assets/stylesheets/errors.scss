@@ -1,0 +1,10 @@
+$error_field_col: rgb(210, 86, 86);
+
+.field_with_errors {
+  input, textarea {
+    border-color: $error_field_col;
+  }
+  label {
+    color: $error_field_col;
+  }
+}
