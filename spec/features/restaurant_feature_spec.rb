@@ -60,9 +60,9 @@ feature 'restaurant' do
     end
   end
   context 'editing restaurants' do
-    before { create_restaurant(name: restaurant_name, description: restaurant_desc, id: 1) }
 
     scenario 'Cannot edit restaurant if not logged in' do
+      create_restaurant(name: restaurant_name, description: restaurant_desc)
       visit '/restaurants'
       click_link 'Edit KFC'
       expect(page).to have_content 'You need to sign in or sign up before continuing'
@@ -70,17 +70,26 @@ feature 'restaurant' do
 
     scenario 'let a user edit a restaurant' do
       sign_up
+      fill_in_restaurant_form(name: restaurant_name, description: restaurant_desc)
       update_restaurant(name: restaurant_new_name, description: restaurant_new_desc)
       click_link 'Kentucky Fried Chicken'
       expect(page).to have_content restaurant_new_name
       expect(page).to have_content restaurant_new_desc
-      expect(current_path).to eq '/restaurants/1'
+      restaurant_id = Restaurant.last.id
+      expect(current_path).to eq "/restaurants/#{restaurant_id}"
+    end
+
+    scenario 'user can only edit a restaurant created by them' do
+      create_restaurant(name: restaurant_name, description: restaurant_desc)
+      sign_up
+      click_link 'Edit KFC'
+      expect(page).to have_content 'You cannot edit a restaurant that belongs to another user'
     end
   end
   context 'deleting restaurants' do
-    before { create_restaurant(name: restaurant_name, description: restaurant_desc) }
 
     scenario 'Cannot delete restaurant if not logged in' do
+      create_restaurant(name: restaurant_name, description: restaurant_desc)
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).to have_content 'You need to sign in or sign up before continuing'
@@ -88,10 +97,18 @@ feature 'restaurant' do
 
     scenario 'removes a restaurant when a user clicks a delete link' do
       sign_up
+      fill_in_restaurant_form(name: restaurant_name, description: restaurant_desc)
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).not_to have_content restaurant_name
       expect(page).to have_content 'Restaurant deleted successfully'
+    end
+
+    scenario 'user can only edit a restaurant created by them' do
+      create_restaurant(name: restaurant_name, description: restaurant_desc)
+      sign_up
+      click_link 'Delete KFC'
+      expect(page).to have_content 'You cannot delete a restaurant that belongs to another user'
     end
   end
 end

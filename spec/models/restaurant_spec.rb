@@ -1,5 +1,9 @@
 describe Restaurant do
 
+  context 'associations' do
+    it { is_expected.to belong_to(:user) }
+  end
+
   it 'is not valid with a name less than three chars' do
     restaurant = Restaurant.new(name: 'kf')
     expect(restaurant).to have(1).error_on(:name)
@@ -7,7 +11,8 @@ describe Restaurant do
   end
 
   it 'is not valid unless it has a unique name' do
-    Restaurant.create(name: "Moe's Tavern")
+    test_user = User.create(email: "test@test.com", password: 'testtest', password_confirmation: 'testtest')
+    test_user.restaurants.create(name: "Moe's Tavern")
     restaurant = Restaurant.new(name: "Moe's Tavern")
     expect(restaurant).to have(1).error_on(:name)
   end

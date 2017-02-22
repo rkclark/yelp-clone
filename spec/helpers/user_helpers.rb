@@ -7,4 +7,9 @@ module UserHelpers
     fill_in('Password confirmation', with: 'testtest')
     click_button('Sign up')
   end
+
+  def sign_out
+    visit('/')
+    click_link('Sign out')
+  end
 end

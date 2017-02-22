@@ -1,7 +1,8 @@
 module RestaurantHelpers
 
   def create_restaurant(name:, description: 'description', id: 1)
-    Restaurant.create(name: name, description: description, id: id)
+    test_user = User.create(email: "test@test.com", password: 'testtest', password_confirmation: 'testtest')
+    test_user.restaurants.create(name: name, description: description, id: id, user_id: 1)
   end
 
   def fill_in_restaurant_form(name:, description:)
