@@ -26,7 +26,13 @@ feature 'restaurant' do
     end
   end
   context 'creating restaurants' do
+    scenario 'Cannot create restaurant if not logged in' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      expect(page).to have_content 'You need to sign in or sign up before continuing'
+    end
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
+      sign_up
       fill_in_restaurant_form(name: restaurant_name, description: restaurant_desc)
       expect(page).to have_content restaurant_name
       expect(current_path).to eq '/restaurants'
@@ -36,6 +42,7 @@ feature 'restaurant' do
       let(:short_name) { 'kf' }
 
       scenario 'does not let you submit a name that is too short' do
+        sign_up
         fill_in_restaurant_form(name: short_name, description: restaurant_desc)
         expect(page).not_to have_css 'h2', text: 'kf'
         expect(page).to have_content 'error'
@@ -55,7 +62,14 @@ feature 'restaurant' do
   context 'editing restaurants' do
     before { create_restaurant(name: restaurant_name, description: restaurant_desc, id: 1) }
 
+    scenario 'Cannot edit restaurant if not logged in' do
+      visit '/restaurants'
+      click_link 'Edit KFC'
+      expect(page).to have_content 'You need to sign in or sign up before continuing'
+    end
+
     scenario 'let a user edit a restaurant' do
+      sign_up
       update_restaurant(name: restaurant_new_name, description: restaurant_new_desc)
       click_link 'Kentucky Fried Chicken'
       expect(page).to have_content restaurant_new_name
@@ -66,7 +80,14 @@ feature 'restaurant' do
   context 'deleting restaurants' do
     before { create_restaurant(name: restaurant_name, description: restaurant_desc) }
 
+    scenario 'Cannot delete restaurant if not logged in' do
+      visit '/restaurants'
+      click_link 'Delete KFC'
+      expect(page).to have_content 'You need to sign in or sign up before continuing'
+    end
+
     scenario 'removes a restaurant when a user clicks a delete link' do
+      sign_up
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).not_to have_content restaurant_name
