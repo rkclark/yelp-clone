@@ -2,6 +2,7 @@ describe Restaurant do
 
   context 'associations' do
     it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:reviews).dependent(:destroy) }
   end
 
   it 'is not valid with a name less than three chars' do

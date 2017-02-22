@@ -5,13 +5,16 @@ feature 'reviewing' do
   before { create_restaurant(name: restaurant_name) }
 
   scenario 'allows users to leave a review using a form' do
-    visit '/restaurants'
-    click_link 'Review KFC'
-    fill_in :Thoughts, with: "so so"
-    select '3', from: 'Rating'
-    click_button 'Leave Review'
-
+    sign_up
+    fill_in_review_form(restaurant: restaurant_name)
     expect(current_path).to eq '/restaurants'
     expect(page).to have_content 'so so'
+  end
+
+  scenario 'cannot review the same restaurant twice' do
+    sign_up
+    fill_in_review_form(restaurant: restaurant_name)
+    click_link "Review #{restaurant_name}"
+    expect(page).to have_content 'You have already reviewed this restaurant!'
   end
 end
