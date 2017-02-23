@@ -51,7 +51,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    cliver (0.3.2)
     concurrent-ruby (1.0.4)
+    database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     devise (4.2.0)
       bcrypt (~> 3.0)
@@ -129,6 +131,10 @@ GEM
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
     pg (0.19.0)
+    poltergeist (1.13.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     public_suffix (2.0.5)
     puma (3.7.1)
     rack (2.0.1)
@@ -239,6 +245,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   capybara
+  database_cleaner
   devise
   dotenv-rails
   haml-rails
@@ -247,6 +254,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   omniauth-facebook
   pg (~> 0.18)
+  poltergeist
   puma (~> 3.0)
   rails (~> 5.0.1)
   rspec-collection_matchers
@@ -264,4 +272,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.14.4
+   1.14.5
