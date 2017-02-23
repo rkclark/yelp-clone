@@ -9,4 +9,8 @@ class Restaurant < ApplicationRecord
     review.user = current_user
     review
   end
+
+  def belongs_to_currrent_user?(current_user)
+    user_id == current_user.id
+  end
 end

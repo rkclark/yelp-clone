@@ -25,7 +25,7 @@ class RestaurantsController < ApplicationController
 
   def edit
     @restaurant = Restaurant.find(params[:id])
-    if @restaurant.user_id == current_user.id
+    if @restaurant.belongs_to_currrent_user?(current_user)
       render 'edit'
     else
       flash[:notice] = 'You cannot edit a restaurant that belongs to another user'
@@ -41,7 +41,7 @@ class RestaurantsController < ApplicationController
 
   def destroy
     @restaurant = Restaurant.find(params[:id])
-    if @restaurant.user_id == current_user.id
+    if @restaurant.belongs_to_currrent_user?(current_user)
       @restaurant.destroy
       flash[:notice] = 'Restaurant deleted successfully'
     else
