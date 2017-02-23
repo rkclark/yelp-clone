@@ -8,9 +8,9 @@
         - restaurant.reviews.each do |review|
           %p= review.thoughts
           %p= review.rating
-          %p= pluralize review.endorsements.count, 'endorsement'
-          = form_tag("/reviews/#{review.id}/endorsements", method: "post") do
-            = submit_tag 'Endorse Review'
+          %span.endorsements_count= review.endorsements.count
+          = 'endorsement'.pluralize review.endorsements.count
+          = link_to 'Endorse Review', review_endorsements_path(review), class: 'endorsements-link'
       - if current_user
         - unless current_user.has_reviewed? restaurant
           %h2= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
