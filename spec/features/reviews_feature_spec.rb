@@ -14,7 +14,11 @@ feature 'reviewing' do
   scenario 'cannot review the same restaurant twice' do
     sign_up
     fill_in_review_form(restaurant: restaurant_name)
-    click_link "Review #{restaurant_name}"
-    expect(page).to have_content 'You have already reviewed this restaurant!'
+    expect('restaurant_1').not_to have_css('a h2', :text => "Review #{restaurant_name}")
+  end
+
+  scenario 'cannot place a review unless signed in' do
+    visit('/')
+    expect('restaurant_1').not_to have_css('a h2', :text => "Review #{restaurant_name}")
   end
 end
