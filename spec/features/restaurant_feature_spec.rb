@@ -37,6 +37,13 @@ feature 'restaurant' do
       expect(page).to have_content restaurant_name
       expect(current_path).to eq '/restaurants'
     end
+    scenario 'can upload an image' do
+      sign_up
+      image = 'spec/fixture/restaurant_test.jpg'
+      fill_in_restaurant_form(name: restaurant_name, description: restaurant_desc, image: image)
+      image_element = find('img')
+      expect(image_element['src']).to include('restaurant_test')
+    end
 
     context 'an invalid restaurant' do
       let(:short_name) { 'kf' }

@@ -5,11 +5,12 @@ module RestaurantHelpers
     test_user.restaurants.create(name: name, description: description, id: id, user_id: 1)
   end
 
-  def fill_in_restaurant_form(name:, description:)
+  def fill_in_restaurant_form(name:, description:, image: nil)
     visit '/restaurants'
     click_link 'Add a restaurant'
     fill_in 'Name', with: name
     fill_in 'Description', with: description
+    attach_file('restaurant[image]', Rails.root.join(image)) if image
     click_button 'Create Restaurant'
   end
 
